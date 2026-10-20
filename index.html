@@ -492,18 +492,6 @@ input[type="range"]{accent-color:var(--primary)}
   #printRoot .pr-table h3{font-size:18px;margin:0 0 6px}
   #printRoot .pr-table li{font-size:13px;margin:2px 0}
 }
-
-/* ---------- LaCasaPrint demo-locked pages ---------- */
-.demo-lock{min-height:58vh;display:grid;place-items:center;padding:28px 12px}
-.demo-lock-card{width:min(100%,560px);text-align:center;padding:clamp(26px,5vw,48px);border:1px solid var(--line);border-radius:26px;background:var(--card);box-shadow:0 18px 55px rgba(50,25,35,.08)}
-.demo-lock-icon{width:66px;height:66px;border-radius:22px;margin:0 auto 18px;display:grid;place-items:center;background:var(--blush);color:var(--primary)}
-.demo-lock-icon svg{width:30px;height:30px}
-.demo-lock-card h1{font-family:var(--font-serif);font-size:clamp(27px,4vw,38px);line-height:1.12;margin:0 0 12px;color:var(--ink)}
-.demo-lock-card p{color:var(--muted);line-height:1.7;margin:0 auto 22px;max-width:420px}
-.demo-lock-brand{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:999px;background:var(--primary);color:#fff!important;text-decoration:none;font-weight:700;box-shadow:0 8px 20px rgba(122,47,66,.18)}
-.demo-lock-brand:hover{filter:brightness(1.06);transform:translateY(-1px)}
-.demo-lock-note{font-size:12px!important;margin-top:16px!important;margin-bottom:0!important}
-
 </style>
 </head>
 <body>
@@ -511,7 +499,7 @@ input[type="range"]{accent-color:var(--primary)}
   <aside class="sidebar" aria-label="Sidebar">
     <div class="side-brand">
       <span class="logo" id="logoIc" aria-hidden="true"></span>
-      <div><div class="name">Petal &amp; Vow</div><div class="tag"><a href="https://lacasaprint.etsy.com" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none">LaCasaPrint</a></div></div>
+      <div><div class="name">Petal &amp; Vow</div><div class="tag">a gentle planner</div></div>
     </div>
     <div class="side-profile" id="sideProfile"></div>
     <nav id="sideNav" aria-label="Main navigation"></nav>
@@ -2204,28 +2192,13 @@ function renderFooter(r){
   $('#footStrip').innerHTML=`<div class="fs-facts">${facts.map(f=>`<span>${esc(f)}</span>`).join('<span class="sep">·</span>')}</div>
     <span class="saved">${icon('check')} saved on this device${storageOK?'':' — this visit only'}</span>`;
 }
-const DEMO_LOCKED_ROUTES = new Set(['budget','vendors','guests','seating']);
-function renderDemoLocked(route){
-  const labels = {budget:'Budget', vendors:'Vendors', guests:'Guests & RSVP', seating:'Seating'};
-  const label = labels[route] || 'This section';
-  return `<section class="demo-lock" aria-label="Demo section locked">
-    <div class="demo-lock-card">
-      <div class="demo-lock-icon">${icon('lock')}</div>
-      <h1>${esc(label)} is part of the full planner</h1>
-      <p>You’re viewing the free demo. This section is kept as a preview so you can explore the planner before getting the complete version from LaCasaPrint.</p>
-      <a class="demo-lock-brand" href="https://lacasaprint.etsy.com" target="_blank" rel="noopener noreferrer">Explore LaCasaPrint <span aria-hidden="true">↗</span></a>
-      <p class="demo-lock-note">Home, Timeline, Checklist, Gifts, Moodboard and Settings remain available in this demo.</p>
-    </div>
-  </section>`;
-}
-
 function render(){
   if(!S) return;
   let r=currentRoute();
   if(S.settings.simpleMode && ['seating','gifts','moodboard'].includes(r)){ location.hash='#home'; return; }
   applyTheme();
   fillChrome(r);
-  $('#screen').innerHTML=DEMO_LOCKED_ROUTES.has(r) ? renderDemoLocked(r) : RENDER[r]();
+  $('#screen').innerHTML=RENDER[r]();
   fillIcons($('#screen'));
   renderFooter(r);
   if(r!==lastRoute){ window.scrollTo(0,0); lastRoute=r; }
